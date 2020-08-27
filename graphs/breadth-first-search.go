@@ -6,7 +6,7 @@ type Node struct {
 	Children []*Node
 }
 
-// BreadthFirstSearch : time -> O(v + e), space O(v + e)
+// BreadthFirstSearch : time -> O(v + e), space O(v)
 func (n *Node )BreadthFirstSearch(array []string) []string {
 	q := []*Node{n}
 	for len(q) > 0 {
