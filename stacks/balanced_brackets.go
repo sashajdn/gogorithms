@@ -28,6 +28,7 @@ func (s *Stack) Push(values ...interface{}) {
 }
 
 // BalancedBrackets : checks if string contains balanced brackets
+// Complexity: T -> O(n), S -> O(n)
 func BalancedBrackets(s string) bool {
 	stack := NewStack()
 	bh := newBracketHandler()
