@@ -9,7 +9,7 @@ func TestBalancedBrackets(t *testing.T) {
 	expected := false
 	res := BalancedBrackets(s)
 	if res != expected {
-		// t.Fatalf("expected: %v, got %v", expected, res)
+		t.Fatalf("expected: %v, got %v", expected, res)
 	}
 
 	s = "[[({})]]{}([])"
