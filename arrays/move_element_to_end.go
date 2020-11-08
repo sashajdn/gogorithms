@@ -1,7 +1,6 @@
 package arrays
 
 import (
-	"fmt"
 	"sort"
 )
 
@@ -38,7 +37,6 @@ func bisect(arr []int, toFind int) int {
 	midx := len(arr) / 2
 
 	for midx >= 0 && midx < len(arr) {
-		fmt.Println(midx, arr[midx])
 		if arr[midx] == toFind {
 			return midx
 		}
