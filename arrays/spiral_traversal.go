@@ -1,6 +1,6 @@
 package arrays
 
-// SpiralTraversal T -> O(), S -> O()
+// SpiralTraversal T -> O(n), S -> O(n)
 func SpiralTraversal(array [][]int) []int {
 	if len(array) == 0 {
 		return []int{}
