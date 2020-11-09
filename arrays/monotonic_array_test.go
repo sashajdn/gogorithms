@@ -43,4 +43,12 @@ func TestIsMonotonicArray(t *testing.T) {
 	if expected != result {
 		t.Fatal()
 	}
+
+	input = []int{-1, -5, 10}
+	expected = false
+	result = IsMonotonicArray(input)
+
+	if expected != result {
+		t.Fatal()
+	}
 }

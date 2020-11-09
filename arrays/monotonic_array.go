@@ -9,14 +9,14 @@ func IsMonotonicArray(array []int) bool {
 	increasing := false
 
 	if array[0] == array[1] {
-		return false
+		return IsMonotonicArray(array[1:])
 	}
 
 	if array[0] < array[1] {
 		increasing = true
 	}
 
-	for i := 2; i < len(array)-1; i++ {
+	for i := 1; i < len(array)-1; i++ {
 		if increasing {
 			if array[i] >= array[i+1] {
 				return false
