@@ -1,17 +1,5 @@
 package bst
 
-type BST struct {
-	value int
-
-	left  *BST
-	right *BST
-}
-
-func New(value int, left, right *BST) *BST {
-	bst := BST{value, left, right}
-	return &bst
-}
-
 // FindClosestValue T -> O(log(n)), S -> O(1)
 func (tree *BST) FindClosestvalue(target int) int {
 	if tree.value == target {
