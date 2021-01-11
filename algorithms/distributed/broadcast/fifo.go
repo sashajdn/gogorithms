@@ -2,8 +2,8 @@ package broadcast
 
 import (
 	"fmt"
-	"gogorithms/algorithms/broadcast/network"
-	"gogorithms/algorithms/broadcast/network/message"
+	"gogorithms/dalgorithms/broadcast/network"
+	"gogorithms/dalgorithms/broadcast/network/message"
 	"gogorithms/structures/clocks"
 	"gogorithms/structures/queues"
 	"sync"
@@ -74,7 +74,7 @@ func (f *FIFO) receive(msg *message.Message) error {
 		if !ok {
 			return fmt.Errorf("Expecting a message of type `message.Message` but failed.")
 		}
-		f.c.IncrementOther(msg.SenderID)
+		f.c.Increment(msg.SenderID)
 	}
 	return nil
 }

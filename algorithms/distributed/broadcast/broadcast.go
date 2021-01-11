@@ -1,6 +1,6 @@
 package broadcast
 
-import "gogorithms/algorithms/broadcast/network/message"
+import "gogorithms/dalgorithms/broadcast/network/message"
 
 // Broadcaster interface that defines the broadcast algorithm behaviour.
 type Broadcaster interface {

@@ -21,27 +21,20 @@ func New(id int, numberOfNodes int) *VectorClock {
 }
 
 // Increment increments the timestamp for own node
-func (v *VectorClock) Increment() error {
+func (v *VectorClock) IncrementSelf() error {
 	if v.id > len(v.timestamp) {
 		return fmt.Errorf("Not enough nodes are initialized")
 	}
-
-	newTimestamp := make([]int, len(v.timestamp))
-	newTimestamp[v.id]++
-
-	err := v.Merge(newTimestamp)
-	if err != nil {
-		return err
-	}
-	return nil
+	return v.Increment(v.id)
 }
 
-func (v *VectorClock) IncrementOther(id int) error {
+func (v *VectorClock) Increment(id int) error {
 	if id < 0 || id > len(v.timestamp) {
 		return fmt.Errorf("Failed to increment: node %v doesn't exist", id)
 	}
 	newTimestamp := make([]int, len(v.timestamp))
 	copy(newTimestamp, v.timestamp)
+	newTimestamp[id]++
 
 	err := v.Merge(newTimestamp)
 	if err != nil {
