@@ -6,7 +6,7 @@ package graphs
 func SingleCycleCheck(array []int) bool {
 	currentIndex, itemsVisited := 0, 0
 
-	for itemsVisited < len(array) - 1 {
+	for itemsVisited < len(array)-1 {
 		if itemsVisited > 0 && itemsVisited < len(array) && currentIndex == 0 {
 			return false
 		}
@@ -15,8 +15,8 @@ func SingleCycleCheck(array []int) bool {
 			return currentIndex == 0
 		}
 
-		itemsVisited ++
-		nextIndex := (array[current] + current) % len(array)
+		itemsVisited++
+		nextIndex := (array[currentIndex] + currentIndex) % len(array)
 		currentIndex = nextIndex
 		if currentIndex < 0 {
 			currentIndex += len(array)
