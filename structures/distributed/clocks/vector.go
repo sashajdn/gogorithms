@@ -1,9 +1,13 @@
 package clocks
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 // VectorClock is a vector clock
 type VectorClock struct {
+	sync.Mutex
 	id        int
 	timestamp []int
 }
@@ -21,12 +25,25 @@ func (v *VectorClock) Increment() error {
 	if v.id > len(v.timestamp) {
 		return fmt.Errorf("Not enough nodes are initialized")
 	}
-	v.timestamp[v.id]++
-	return nil
+	return v.IncrementOther(v.id)
+}
+
+func (v *VectorClock) IncrementOther(id int) error {
+	if id > len(v.timestamp) {
+		return fmt.Errorf("Not enough nodes are initialized")
+	}
+
+	newTimestamp := make([]int, len(v.timestamp))
+	copy(newTimestamp, v.timestamp)
+	newTimestamp[id]++
+
+	return v.Merge(newTimestamp)
 }
 
 // Merge merges two timestamps and sets as the current timestamp
 func (v *VectorClock) Merge(newTimestamp []int) error {
+	v.Lock()
+	defer v.Unlock()
 	if len(newTimestamp) != len(v.timestamp) {
 		return fmt.Errorf("Cannot compare timestamps; differing sizes")
 	}
