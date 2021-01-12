@@ -10,12 +10,12 @@ func TestVectorClock(t *testing.T) {
 	vc1 := New(2, numberOfNodes)
 	vc2 := New(6, numberOfNodes)
 
-	vc1.IncrementSelf()
+	vc1.Increment()
 	assert(t, 1, vc1.timestamp[2], func(a, b interface{}) bool {
 		return a == b
 	})
 
-	vc2.IncrementSelf()
+	vc2.Increment()
 	vc1.Merge(vc2.timestamp)
 	assert(t, 1, vc1.timestamp[2], func(a, b interface{}) bool {
 		return a == b
@@ -24,7 +24,7 @@ func TestVectorClock(t *testing.T) {
 		return a == b
 	})
 
-	vc1.IncrementSelf()
+	vc1.Increment()
 
 	res, err := vc1.Equal(vc2.timestamp)
 	assertNoError(t, err)

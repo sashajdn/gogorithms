@@ -1,6 +1,6 @@
 package network
 
-import "gogorithms/dalgorithms/broadcast/network/message"
+import "gogorithms/algorithms/distributed/broadcast/network/message"
 
 type Network interface {
 	Broadcast(id int, sendSeq int, msg *message.Message) error

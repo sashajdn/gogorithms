@@ -7,9 +7,9 @@ import (
 
 // VectorClock is a vector clock
 type VectorClock struct {
+	sync.Mutex
 	id        int
 	timestamp []int
-	sync.Locker
 }
 
 // New constructs a new Vector Clock & returns a pointer to it
@@ -20,34 +20,30 @@ func New(id int, numberOfNodes int) *VectorClock {
 	}
 }
 
-// Increment increments the timestamp for own node
-func (v *VectorClock) IncrementSelf() error {
+// Increment increments the timestamp for the given node
+func (v *VectorClock) Increment() error {
 	if v.id > len(v.timestamp) {
 		return fmt.Errorf("Not enough nodes are initialized")
 	}
-	return v.Increment(v.id)
+	return v.IncrementOther(v.id)
 }
 
-func (v *VectorClock) Increment(id int) error {
-	if id < 0 || id > len(v.timestamp) {
-		return fmt.Errorf("Failed to increment: node %v doesn't exist", id)
+func (v *VectorClock) IncrementOther(id int) error {
+	if id > len(v.timestamp) {
+		return fmt.Errorf("Not enough nodes are initialized")
 	}
+
 	newTimestamp := make([]int, len(v.timestamp))
 	copy(newTimestamp, v.timestamp)
 	newTimestamp[id]++
 
-	err := v.Merge(newTimestamp)
-	if err != nil {
-		return err
-	}
-	return nil
+	return v.Merge(newTimestamp)
 }
 
 // Merge merges two timestamps and sets as the current timestamp
 func (v *VectorClock) Merge(newTimestamp []int) error {
 	v.Lock()
 	defer v.Unlock()
-
 	if len(newTimestamp) != len(v.timestamp) {
 		return fmt.Errorf("Cannot compare timestamps; differing sizes")
 	}

@@ -2,9 +2,9 @@ package broadcast
 
 import (
 	"fmt"
-	"gogorithms/dalgorithms/broadcast/network"
-	"gogorithms/dalgorithms/broadcast/network/message"
-	"gogorithms/structures/clocks"
+	"gogorithms/algorithms/distributed/broadcast/network"
+	"gogorithms/algorithms/distributed/broadcast/network/message"
+	"gogorithms/structures/distributed/clocks"
 	"gogorithms/structures/queues"
 	"sync"
 )
@@ -26,8 +26,7 @@ func New(identifier int, numberOfNodes int, maxBufSize int) *FIFO {
 	return &FIFO{
 		Id:      identifier,
 		SendSeq: 0,
-		c:       clocks.New(identifier, numberOfNodes),
-		buf: &Buffer{
+		c:       clocks.New(identifier, numberOfNodes), buf: &Buffer{
 			q: queues.NewBasicQueue(maxBufSize),
 		},
 		n: network.New(),
