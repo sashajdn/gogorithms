@@ -73,7 +73,7 @@ func (f *FIFO) receive(msg *message.Message) error {
 		if !ok {
 			return fmt.Errorf("Expecting a message of type `message.Message` but failed.")
 		}
-		f.c.Increment(msg.SenderID)
+		f.c.IncrementOther(msg.SenderID)
 	}
 	return nil
 }
