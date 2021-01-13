@@ -50,7 +50,6 @@ func slicesEqual(a, b [][]int) bool {
 	if len(a) == 1 {
 		return sliceIn(a[0], b)
 	}
-
 	if sliceIn(a[0], b) && !sliceIn(a[0], a[1:]) {
 		return slicesEqual(a[1:], b)
 	}
