@@ -18,7 +18,6 @@ func LevenshteinDistance(a, b string) int {
 
 	for i := 0; i < len(l)+1; i++ {
 		evenEdits[i] = i
-		oddEdits[i] = 0
 	}
 
 	for j := 1; j < len(l)+1; j++ {
