@@ -1,6 +1,6 @@
 package arrays
 
-// SortedSquareArray T(N) -> O(n), S(N) -> O(1)
+// SortedSquareArray T(N) -> O(n), S(N) -> O(n)
 func SortedSquareArray(array []int) []int {
 	if array == nil {
 		return nil
