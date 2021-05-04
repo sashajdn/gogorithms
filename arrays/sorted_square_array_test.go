@@ -24,6 +24,11 @@ func TestSortedSquareArray(t *testing.T) {
 			input:          []int{},
 			expectedOutput: []int{},
 		},
+		{
+			name:           "array_with_negative_values",
+			input:          []int{-10, -6, 1, 5, 8},
+			expectedOutput: []int{1, 25, 36, 64, 100},
+		},
 	}
 	for _, tc := range tests {
 		tc := tc
