@@ -5,7 +5,7 @@ type treeInfo struct {
 	isBalanced bool
 }
 
-// HeightBalancedBinaryTree
+// HeightBalancedBinaryTree T(N) -> O(n), S(N) -> O(h)
 func HeightBalancedBinaryTree(tree *BST) bool {
 	treeInfo := getTreeInfo(tree)
 	return treeInfo.isBalanced
