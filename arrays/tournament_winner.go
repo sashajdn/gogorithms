@@ -20,12 +20,12 @@ func TournamentWinner(competitions [][]string, results []int) string {
 		}
 	}
 	var (
-		maxTeam  string
-		maxValue int
+		maxTeam   string
+		maxPoints int
 	)
-	for k, v := range table {
-		if v > maxValue {
-			maxTeam = k
+	for team, points := range table {
+		if points > maxPoints {
+			maxPoints, maxTeam = points, team
 		}
 	}
 	return maxTeam
