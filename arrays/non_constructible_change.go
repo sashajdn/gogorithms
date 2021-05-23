@@ -2,6 +2,7 @@ package arrays
 
 import "sort"
 
+// NonConstructibleChange O(T) -> O(nlogn), O(S) -> O(1)
 func NonConstructibleChange(coins []int) int {
 	if len(coins) == 0 {
 		return 1
