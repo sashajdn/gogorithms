@@ -7,58 +7,55 @@ type BinaryTree struct {
 	Right *BinaryTree
 }
 
+type treeInfo struct {
+	Height   int
+	Diameter int
+}
+
 // BinaryTreeDiameter returns the diameter of a binary tree, where the diameter is defined as the length
 // of the longest path, even if the path doesn't pass through the root of the tree.
 // A path is a collection of connected nodes in a tree, where no node is connected to
 // to more than two other nodes.
 // The length of the path is the length between the paths first node & last node.
 //
-// O(n) => T(H**2) where H is the height of the tree.
-// O(n) => S(H) for H recursive calls on the stack.
+// O(n) => T(n) - due to the depth first search.
+// O(n) => S(h lim-> n) - average case is h, height of the tree, but tends to n, as the tree becomes more unbalanced.
 func BinaryTreeDiameter(tree *BinaryTree) int {
-	if tree == nil {
-		return 0
-	}
-
-	if tree.Left != nil && tree.Right != nil {
-		return max(recurseAndSum(tree), max(recurseAndSum(tree.Left), recurseAndSum(tree.Right)))
-	}
-
-	if tree.Left == nil {
-		return max(recurseAndSum(tree), recurseAndSum(tree.Right))
-	}
-
-	if tree.Right == nil {
-		return max(recurseAndSum(tree), recurseAndSum(tree.Left))
-	}
-
-	return -1
+	return getTreeInfo(tree).Diameter
 }
 
-func recurseAndSum(tree *BinaryTree) int {
+func getTreeInfo(tree *BinaryTree) *treeInfo {
 	if tree == nil {
-		return 0
+		return &treeInfo{}
 	}
 
-	if tree.Left != nil && tree.Right != nil {
-		return 1
-	}
+	// Depth first search.
+	lhs := getTreeInfo(tree.Left)
+	rhs := getTreeInfo(tree.Right)
 
-	if tree.Left != nil {
-		return 1 + recurseAndSum(tree.Right)
-	}
+	// Calculate the max diameter so far.
+	maxDiameterSoFar := max(
+		lhs.Diameter,
+		rhs.Diameter,
+		lhs.Height+rhs.Height,
+	)
 
-	if tree.Right != nil {
-		return 1 + recurseAndSum(tree.Left)
-	}
+	// Calculate the current height.
+	currentHeight := max(lhs.Height, rhs.Height) + 1
 
-	return 1 + recurseAndSum(tree.Left) + recurseAndSum(tree.Right)
+	return &treeInfo{
+		Diameter: maxDiameterSoFar,
+		Height:   currentHeight,
+	}
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
+func max(vv ...int) int {
+	var max int
+	for _, v := range vv {
+		if v > max {
+			max = v
+		}
 	}
 
-	return b
+	return max
 }
