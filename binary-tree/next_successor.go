@@ -1,13 +1,5 @@
 package binarytree
 
-// BinaryTreeParent ...
-type BinaryTreeParent struct {
-	Value  int
-	Left   *BinaryTreeParent
-	Right  *BinaryTreeParent
-	Parent *BinaryTreeParent
-}
-
 // FindSuccessor given a tree & a node in that tree, returns the next successor assuming
 // in order traversal.
 //
