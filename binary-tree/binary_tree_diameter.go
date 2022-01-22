@@ -1,12 +1,5 @@
 package binarytree
 
-// BinaryTree ...
-type BinaryTree struct {
-	Value int
-	Left  *BinaryTree
-	Right *BinaryTree
-}
-
 type treeInfo struct {
 	Height   int
 	Diameter int
