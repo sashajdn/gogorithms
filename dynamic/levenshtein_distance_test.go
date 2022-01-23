@@ -2,6 +2,8 @@ package dynamic
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLevenshteinDistance(t *testing.T) {
@@ -41,7 +43,7 @@ func TestLevenshteinDistance(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			res := LevenshteinDistance(tc.a, tc.b)
-			assert(t, tc.expectedDistance, res)
+			assert.Equal(t, tc.expectedDistance, res)
 		})
 	}
 }
@@ -77,7 +79,7 @@ func TestLongestString(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			a, _ := longestString(tc.a, tc.b)
-			assert(t, tc.expectedLongest, a)
+			assert.Equal(t, tc.expectedLongest, a)
 		})
 	}
 }
@@ -86,14 +88,8 @@ func TestMin(t *testing.T) {
 	t.Parallel()
 
 	res := min(7, 3, 5)
-	assert(t, 3, res)
+	assert.Equal(t, 3, res)
 
 	res = min(7, 3, 5, 0)
-	assert(t, 0, res)
-}
-
-func assert(t *testing.T, expected interface{}, got interface{}) {
-	if expected != got {
-		t.Fatalf("expected -> %v, got -> %v", expected, got)
-	}
+	assert.Equal(t, 0, res)
 }

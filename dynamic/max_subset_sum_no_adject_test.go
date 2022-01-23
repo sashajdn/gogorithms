@@ -1,6 +1,10 @@
 package dynamic
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestMaxSubsetNoAdjacent(t *testing.T) {
 	t.Parallel()
@@ -30,7 +34,7 @@ func TestMaxSubsetNoAdjacent(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			result := MaxSubsetNoAdjacent(tc.input)
-			assert(t, tc.expectedOutput, result)
+			assert.Equal(t, tc.expectedOutput, result)
 		})
 	}
 }
