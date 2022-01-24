@@ -33,3 +33,32 @@ func NumberOfWaysToTraverseGraph_Dynamic(width, height int) int {
 
 	return wh[height-1][width-1]
 }
+
+// NumberOfWaysToTraverseGraph_Recursive implements the above but recusively.
+//
+// T -> O(2 ** (n+m))
+// S -> O(n + m)
+func NumberOfWaysToTraverseGraph_Recursive(width, height int) int {
+	if width == 1 || height == 1 {
+		return 1
+	}
+
+	return NumberOfWaysToTraverseGraph_Recursive(width-1, height) + NumberOfWaysToTraverseGraph_Recursive(width, height-1)
+}
+
+// NumberOfWaysToTraverseGraph_Factorial ...
+//
+// T -> O(nm)
+// S -> O(1)
+func NumberOfWaysToTraverseGraph_Factorial(width, height int) int {
+	// Number of perms of n possible options -> (sum(0 -> n))! / sum(i!)0->i
+	return factorial(width+height-2) / (factorial(width-1) + factorial(height-1))
+}
+
+func factorial(n int) int {
+	if n < 2 {
+		return 1
+	}
+
+	return n * factorial(n-1)
+}
