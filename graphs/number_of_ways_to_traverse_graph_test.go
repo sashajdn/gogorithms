@@ -9,7 +9,7 @@ import (
 var testFuncs = []func(width int, height int) int{
 	NumberOfWaysToTraverseGraph_Dynamic,
 	NumberOfWaysToTraverseGraph_Recursive,
-	NumberOfWaysToTraverseGraph_Recursive,
+	NumberOfWaysToTraverseGraph_Factorial,
 }
 
 func TestNumberOfWaysToTraverseAGraph(t *testing.T) {

@@ -51,8 +51,8 @@ func NumberOfWaysToTraverseGraph_Recursive(width, height int) int {
 // T -> O(nm)
 // S -> O(1)
 func NumberOfWaysToTraverseGraph_Factorial(width, height int) int {
-	// Number of perms of n possible options -> (sum(0 -> n))! / sum(i!)0->i
-	return factorial(width+height-2) / (factorial(width-1) + factorial(height-1))
+	// Number of perms of n possible options -> (sum(0 -> n))! / product(i!)0->i
+	return factorial(width+height-2) / (factorial(width-1) * factorial(height-1))
 }
 
 func factorial(n int) int {
