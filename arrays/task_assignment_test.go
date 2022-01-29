@@ -25,6 +25,17 @@ func TestTaskAssignment(t *testing.T) {
 				{1, 3},
 			},
 		},
+		{
+			name:  "example_two",
+			k:     4,
+			tasks: []int{1, 2, 2, 1, 3, 4, 4, 4},
+			expectedOutput: [][]int{
+				{0, 5},
+				{3, 6},
+				{1, 7},
+				{2, 4},
+			},
+		},
 	}
 
 	for _, tt := range tests {
