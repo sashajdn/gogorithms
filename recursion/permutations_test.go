@@ -1,8 +1,16 @@
 package recursion
 
 import (
+	"sort"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
+
+var permutationsChecker = []func(array []int) [][]int{
+	GetPermutations_Better,
+	GetPermutations,
+}
 
 func TestGetPermutations(t *testing.T) {
 	t.Parallel()
@@ -13,12 +21,7 @@ func TestGetPermutations(t *testing.T) {
 		expectedOutput [][]int
 	}{
 		{
-			name:           "empty-input",
-			input:          []int{},
-			expectedOutput: [][]int{},
-		},
-		{
-			name:  "3-input",
+			name:  "example_one",
 			input: []int{1, 2, 3},
 			expectedOutput: [][]int{
 				{1, 2, 3},
@@ -30,51 +33,46 @@ func TestGetPermutations(t *testing.T) {
 			},
 		},
 	}
-	for _, tc := range tests {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			res := GetPermutations(tc.input)
-			if !slicesEqual(tc.expectedOutput, res) {
-				t.Fatalf("expected -> %v, got -> %v", tc.expectedOutput, res)
+			sort.Slice(tt.expectedOutput, func(i, j int) bool {
+				for k := 0; k < len(tt.expectedOutput[0]); k++ {
+					if tt.expectedOutput[i][k] == tt.expectedOutput[j][k] {
+						continue
+					}
+
+					return tt.expectedOutput[i][k] < tt.expectedOutput[j][k]
+				}
+
+				return false
+			})
+
+			for _, checker := range permutationsChecker {
+
+				res := checker(tt.input)
+				testSorter(&res)
+				testSorter(&tt.expectedOutput)
+
+				assert.Equal(t, tt.expectedOutput, res)
 			}
 		})
 	}
 }
 
-func slicesEqual(a, b [][]int) bool {
-	if len(a) == 0 {
-		return true
-	}
-	if len(a) == 1 {
-		return sliceIn(a[0], b)
-	}
-	if sliceIn(a[0], b) && !sliceIn(a[0], a[1:]) {
-		return slicesEqual(a[1:], b)
-	}
-	return false
-}
+func testSorter(s *[][]int) {
+	sort.Slice(*s, func(i, j int) bool {
+		for k := 0; k < len((*s)[0]); k++ {
+			if (*s)[i][k] == (*s)[j][k] {
+				continue
+			}
 
-func sliceIn(a []int, b [][]int) bool {
-	if len(b) == 0 {
-		return false
-	}
-	if sliceEqual(a, b[0]) {
-		return true
-	}
-	return sliceIn(a, b[1:])
-}
+			return (*s)[i][k] < (*s)[j][k]
+		}
 
-func sliceEqual(a, b []int) bool {
-	if len(a) != len(b) {
 		return false
-	}
-	if len(a) == 0 {
-		return true
-	}
-	if a[0] != b[0] {
-		return false
-	}
-	return sliceEqual(a[1:], b[1:])
+	})
 }
