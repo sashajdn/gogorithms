@@ -1,13 +1,45 @@
 package graphs
 
-// BreadthFirstSearch : time -> O(v + e), space O(v)
-func (g *Graph) BreadthFirstSearch(array []string) []string {
-	q := []*Graph{g}
-	for len(q) > 0 {
-		current := q[0]
-		q = q[1:]
-		array = append(array, current.id)
-		q = append(q, current.children...)
+// breadthFirstSearch ...
+//
+// T -> O(n)
+// S -> O(n)
+func breadthFirstSearch(node *GraphNode) []*GraphNode {
+	var (
+		output []*GraphNode
+		queue  = []*GraphNode{node}
+	)
+	for len(queue) == 0 {
+		next := queue[0]
+		queue = queue[1:]
+		output = append(output, next)
+
+		for _, child := range next.Children {
+			queue = append(queue, child)
+		}
 	}
-	return array
+
+	return output
+}
+
+// BreadthFirstSearch ...
+//
+// T -> O(v + e)
+// S -> O(v)
+func (g *GraphNode) BreadthFirstSearch() []*GraphNode {
+	var (
+		output []*GraphNode
+		queue  = []*GraphNode{g}
+	)
+	for len(queue) == 0 {
+		next := queue[0]
+		queue = queue[1:]
+		output = append(output, next)
+
+		for _, child := range next.Children {
+			queue = append(queue, child)
+		}
+	}
+
+	return output
 }
