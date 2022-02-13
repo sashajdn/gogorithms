@@ -15,7 +15,7 @@ func VerticalOrder(root *TreeNode) [][]int {
 	for i := 1; i < r; i++ {
 		rows := *hm[min+i]
 		sort.Slice(rows, func(i, j int) bool {
-			return rows[i][1] > rows[j][0]
+			return rows[i][1] < rows[j][1]
 		})
 
 		var rowValues []int
