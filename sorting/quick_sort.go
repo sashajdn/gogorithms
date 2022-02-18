@@ -2,7 +2,7 @@ package sorting
 
 // QuickSort ...
 // T -> O(nlog(n)) Best Case, Worst Case O(n**2)
-// S -> O(1)
+// S -> O(log(n))
 func QuickSort(array []int) {
 	quickSort(&array)
 }
