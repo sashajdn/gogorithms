@@ -65,7 +65,11 @@ func (handler *ContinuousMedianHandler) getLargerSmaller() (*Heap, *Heap) {
 	return handler.lesser, handler.higher
 }
 
-func NewHeap(comp func(a, b int) bool) *Heap
+func NewHeap(comp func(a, b int) bool) *Heap {
+	return &Heap{
+		comparision: comp,
+	}
+}
 func lessThan(a, b int) bool { return a < b }
 func moreThan(a, b int) bool { return a > b }
 
