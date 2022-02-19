@@ -4,6 +4,26 @@ import (
 	"sort"
 )
 
+// TwoNumberSum_Iterative ...
+//
+// T -> O(n ** 2)
+// S -> O(1)
+func TwoNumberSum_Iterative(array []int, target int) []int {
+	for _, n := range array {
+		for _, nPrime := range array {
+			if n == nPrime {
+				continue
+			}
+
+			if n+nPrime == target {
+				return []int{n, nPrime}
+			}
+		}
+	}
+
+	return []int{}
+}
+
 // TwoNumberSum_Sorted ...
 //
 // T -> O(nlog(n))
