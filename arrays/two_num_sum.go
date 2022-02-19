@@ -60,7 +60,7 @@ func TwoNumberSum_HashmapOnePass(numbers []int, target int) []int {
 			return []int{i, j}
 		}
 
-		hm[number] = i
+		hm[target-number] = i
 	}
 
 	return []int{}
