@@ -5,6 +5,9 @@ import (
 )
 
 // MinRemoveToMakeValidParentheses ...
+//
+// T -> O(n) where n is the number of chars in the string `s`.
+// S -> O(n) worst case since we have to pop off all n items to add back on - we might improve this by traversing forwards twice.
 func MinRemoveToMakeValidParentheses(s string) string {
 	var count int
 	var stack []string
