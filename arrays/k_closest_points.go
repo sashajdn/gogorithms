@@ -5,8 +5,11 @@ package arrays
 // T -> Best: O(n), Worst: O(n ** 2), Avg: O(n)
 // S -> O(1)
 func KClosestPoints(points [][]int, k int) [][]int {
-	v := quickSelectPoints(points, 0, len(points)-1, k)
-	return v
+	if k >= len(points) {
+		return points
+	}
+
+	return quickSelectPoints(points, 0, len(points)-1, k)
 }
 
 func quickSelectPoints(points [][]int, start, end, target int) [][]int {

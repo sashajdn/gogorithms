@@ -50,6 +50,17 @@ func TestKClosestPoints(t *testing.T) {
 				{8, 3},
 			},
 		},
+		{
+			name: "example_three",
+			points: [][]int{
+				{0, 1},
+				{1, 0},
+			},
+			k: 1,
+			expectedOutput: [][]int{
+				{0, 1},
+			},
+		},
 	}
 
 	for _, tt := range tests {
