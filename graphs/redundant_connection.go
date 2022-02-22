@@ -2,6 +2,10 @@ package graphs
 
 import "fmt"
 
+// FindRedundantConnection ...
+//
+// T: O(e) where e is the number of edges.
+// S: O(v) where v is the number of vertices
 func FindRedundantConnection(edges [][]int) []int {
 	nodes := map[int]int{}
 
@@ -17,8 +21,6 @@ func FindRedundantConnection(edges [][]int) []int {
 		}
 
 	}
-
-	fmt.Println(nodes)
 
 	var redundantEdge []int
 	dsu := BuildRedundantDSU(len(nodes))
