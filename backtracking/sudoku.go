@@ -2,47 +2,53 @@ package backtracking
 
 // SolveSudoku ...
 //
-// T -> O(1)
-// S -> O(1)
+// T -> O(1) since we have a well defined board, if the board size was unbounded, this would become O(n ** 2)
+// S -> O(1) since we don't have to create no auxilary space & any recursive stack is well defined - as long as the board is.
 func SolveSudoku(board [][]int) {
-	for col := 0; col < len(board); col++ {
-		for row := 0; row < len(board); row++ {
-			if board[col][row] != 0 {
+	for j := 0; j < len(board); j++ {
+		for i := 0; i < len(board[0]); i++ {
+			if board[j][i] != 0 {
 				continue
 			}
 
-			for i := 1; i < 10; i++ {
-				if !isPossible(board, col, row, i) {
+			for n := 1; n < 10; n++ {
+				if !isPossible(board, j, i, n) {
 					continue
 				}
 
-				board[col][row] = i
+				board[j][i] = n
 				SolveSudoku(board)
-				board[col][row] = 0
+				board[j][i] = 0
 			}
-
 			return
 		}
 	}
 }
 
-func isPossible(grid [][]int, y, x, n int) bool {
-	for i := 0; i < 9; i++ {
-		if grid[y][i] == n || grid[x][i] == n {
+func isPossible(board [][]int, x, y, n int) bool {
+	for j := 0; j < len(board); j++ {
+		if board[j][x] == n {
 			return false
 		}
 	}
 
-	x0 := (x / 3) * 3
-	y0 := (y / 3) * 3
+	for i := 0; i < len(board[0]); i++ {
+		if board[y][i] == n {
+			return false
+		}
+	}
 
+	m, n := (x/3)*3, (y/3)*3
 	for j := 0; j < 3; j++ {
 		for i := 0; i < 3; i++ {
-			if grid[y0+j][x0+i] == n {
+			col, row := n+j, m+i
+
+			if board[col][row] == n {
 				return false
 			}
 		}
 	}
 
+	//
 	return true
 }
