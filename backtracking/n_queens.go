@@ -28,6 +28,58 @@ func (s *Set) In(v int) bool {
 	return false
 }
 
+func SolveNQueensStringSet(queens int) [][]string {
+	var (
+		cols     Set = map[int]struct{}{}
+		posDiags Set = map[int]struct{}{}
+		negDiags Set = map[int]struct{}{}
+
+		output [][]string
+	)
+
+	solveNQueensString(&cols, &posDiags, &negDiags, 0, queens, []string{}, &output)
+	return output
+}
+
+func solveNQueensString(cols, posDiags, negDiags *Set, row, size int, current []string, output *[][]string) {
+	if row == size {
+		*output = append(*output, current)
+		return
+	}
+
+	for col := 0; col < size; col++ {
+		posDiag, negDiag := row+col, row-col
+
+		if cols.In(col) || posDiags.In(posDiag) || negDiags.In(negDiag) {
+			continue
+		}
+
+		cols.Add(col)
+		posDiags.Add(posDiag)
+		negDiags.Add(negDiag)
+
+		var s string
+		for i := 0; i < size; i++ {
+			switch {
+			case i == col:
+				s += "Q"
+			default:
+				s += "."
+			}
+		}
+
+		current = append(current, s)
+
+		solveNQueensString(cols, posDiags, negDiags, row+1, size, current, output)
+
+		current = current[1:]
+
+		cols.Delete(col)
+		posDiags.Delete(posDiag)
+		negDiags.Delete(negDiag)
+	}
+}
+
 // SolveNQueensSets ...
 //
 // T -> Upper Bound: O(n!), where `n` is the number of queens.

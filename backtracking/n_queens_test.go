@@ -6,6 +6,46 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestSolveNQueens_Strings(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name           string
+		queens         int
+		expectedOutput [][]string
+	}{
+		{
+			name:   "example_four_queens",
+			queens: 4,
+			expectedOutput: [][]string{
+				{
+					".Q..",
+					"...Q",
+					"Q...",
+					"..Q.",
+				},
+				{
+					"..Q.",
+					"Q...",
+					"...Q",
+					".Q..",
+				},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			res := SolveNQueensStringSet(tt.queens)
+
+			assert.Equal(t, tt.expectedOutput, res)
+		})
+	}
+}
+
 func TestSolveNQueens_Sets(t *testing.T) {
 	t.Parallel()
 
