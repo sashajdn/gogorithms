@@ -18,6 +18,12 @@ func RotateMatrix(matrix [][]int) {
 	}
 }
 
+func RotateMatrixKTimes(matrix [][]int, k int) {
+	for n := 0; n < k%4; n++ {
+		RotateMatrix(matrix)
+	}
+}
+
 func swapMatrix(matrix [][]int, i, j, m, n int) {
 	matrix[j][i], matrix[n][m] = matrix[n][m], matrix[j][i]
 }
