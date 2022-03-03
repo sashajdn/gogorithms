@@ -48,3 +48,29 @@ func collectRightSideView(queue *[]*TreeNode, collection *[]int) {
 
 	collectRightSideView(queue, collection)
 }
+
+// RightSideViewDFS ...
+//
+// T -> O(n) where `n` is the total number of nodes in the binary tree.
+// S -> O(log(n)) as we shall have in the worst case at most log(n) recursive calls on the stack as this is the depth of the tree.
+func RightSideViewDFS(root *TreeNode) []int {
+	var collection []int
+	rightSideViewDFS(root, 0, &collection)
+	return collection
+}
+
+func rightSideViewDFS(node *TreeNode, level int, collector *[]int) {
+	if node == nil {
+		return
+	}
+
+	switch {
+	case len(*collector) >= level+1:
+		(*collector)[level] = node.Val
+	default:
+		*collector = append(*collector, node.Val)
+	}
+
+	rightSideViewDFS(node.Left, level+1, collector)
+	rightSideViewDFS(node.Right, level+1, collector) // Last write wins
+}
