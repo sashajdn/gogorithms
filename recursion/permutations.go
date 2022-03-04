@@ -39,6 +39,35 @@ func GetPermutations(array []int) [][]int {
 	return perms
 }
 
+// GetPermutations_Other ...
+//
+// T -> O(n!)
+// S -> O(n)
+func GetPermutations_Other(array []int) [][]int {
+	var permutations [][]int
+	switch len(array) {
+	case 0, 1:
+		return permutations
+	case 2:
+		permutations = append(permutations, []int{array[0], array[1]})
+		permutations = append(permutations, []int{array[1], array[0]})
+		return permutations
+	}
+
+	for i := 0; i < len(array); i++ {
+		swap(array, 0, i)
+		head, tail := array[0], array[1:]
+
+		tailPermutations := GetPermutations_Other(tail)
+		for _, permutation := range tailPermutations {
+			permutations = append(permutations, append(permutation, head))
+		}
+	}
+
+	swap(array, 0, len(array)-1)
+	return permutations
+}
+
 // GetPermutations_Better ...
 func GetPermutations_Better(array []int) [][]int {
 	permutations := [][]int{}
