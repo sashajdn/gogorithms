@@ -10,6 +10,7 @@ import (
 var permutationsChecker = []func(array []int) [][]int{
 	GetPermutations_Better,
 	GetPermutations,
+	GetPermutations_Other,
 }
 
 func TestGetPermutations(t *testing.T) {
