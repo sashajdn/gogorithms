@@ -6,6 +6,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var powersetFuncs = []func([]int) [][]int{
+	Powerset,
+	Powerset_Recursive,
+}
+
 func TestPowerset(t *testing.T) {
 	t.Parallel()
 
@@ -35,12 +40,15 @@ func TestPowerset(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			res := Powerset(tt.input)
+			for _, f := range powersetFuncs {
+				res := f(tt.input)
 
-			testSorter(&res)
-			testSorter(&tt.expectedOutput)
+				testSorter(&res)
+				testSorter(&tt.expectedOutput)
 
-			assert.Equal(t, tt.expectedOutput, res)
+				assert.Equal(t, tt.expectedOutput, res)
+			}
+
 		})
 	}
 }
