@@ -13,8 +13,14 @@ type heapItems struct {
 	ref   map[int]int
 }
 
-func (h heapItems) Len() int      { return len(h.items) }
-func (h heapItems) Swap(i, j int) { h.items[i], h.items[j] = h.items[j], h.items[i] }
+func (h heapItems) Len() int { return len(h.items) }
+func (h heapItems) Swap(i, j int) {
+	// Swap the positions in the ref map: node -> position in heap.
+	h.ref[h.items[i].Distance] = j
+	h.ref[h.items[j].Distance] = i
+
+	h.items[i], h.items[j] = h.items[j], h.items[i]
+}
 func (h heapItems) Less(i, j int) bool {
 	if h.items[i].Distance == h.items[j].Distance {
 		return h.items[i].Node < h.items[j].Node
