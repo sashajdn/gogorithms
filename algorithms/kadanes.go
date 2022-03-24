@@ -1,4 +1,4 @@
-package algos
+package algorithms
 
 /*
 Problem Statement:
@@ -17,7 +17,6 @@ func max(a int, b int) int {
 	return b
 }
 
-
 // Kadanes Algorithm
 // Complexity:
 // Time: O(n)
@@ -28,7 +27,7 @@ func KadanesAlgorithm(array []int) int {
 
 	for _, val := range array {
 		sumSoFar = max(
-			sumSoFar + val,
+			sumSoFar+val,
 			val,
 		)
 		maxSoFar = max(
@@ -37,4 +36,4 @@ func KadanesAlgorithm(array []int) int {
 		)
 	}
 	return maxSoFar
-} 
+}
