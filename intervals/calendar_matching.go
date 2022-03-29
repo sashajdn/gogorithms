@@ -11,16 +11,49 @@ type StringMeeting struct {
 	End   string
 }
 
-// [11:00, 12:00], [12:55, 14:00]
-// 1. merge two calanders t -> O(n + m), s(n + m)
-// 2. > max(start(n), start(m)), min((end(n), end(m))) // Start
-// 3 meetingDuration 60 mins [...[1, 2], [ 3:30, 4]...] -> [[2:00, 3:30]], [[[2:00, 3,00], [2:01, 3:01]]
+// CalendarMatching ...
+//
+// T -> O(m + n)
+// S -> O(m + n)
 func CalendarMatching(
 	calendar1 []StringMeeting, dailyBounds1 StringMeeting,
 	calendar2 []StringMeeting, dailyBounds2 StringMeeting,
 	meetingDuration int,
 ) []StringMeeting {
-	var availableSlots []StringMeeting
+	mergedIntervals := mergeCalanders(calendar1, calendar2)
+
+	var (
+		availableSlots = []StringMeeting{}
+		startBound     = MilitaryTime(maxInterval(dailyBounds1.Start, dailyBounds2.Start))
+		endBound       = MilitaryTime(minInterval(dailyBounds1.End, dailyBounds2.End))
+	)
+	for i := 0; i < len(mergedIntervals); i++ {
+		currentBound := mergedIntervals[i]
+
+		ctm := MilitaryTime(currentBound.Start)
+		if !ctm.LessThan(endBound) {
+			return availableSlots
+		}
+
+		if startBound.LessThan(ctm) {
+			if ctm.ToMinutes()-MilitaryTime(startBound).ToMinutes() >= meetingDuration {
+				availableSlots = append(availableSlots, StringMeeting{
+					Start: string(startBound),
+					End:   string(ctm),
+				})
+			}
+		}
+
+		startBound = MilitaryTime(currentBound.End)
+	}
+
+	if startBound.LessThan(endBound) {
+		availableSlots = append(availableSlots, StringMeeting{
+			Start: string(startBound),
+			End:   string(endBound),
+		})
+	}
+
 	return availableSlots
 }
 
@@ -32,53 +65,64 @@ func mergeCalanders(a, b []StringMeeting) []StringMeeting {
 		return a
 	}
 
-	var mergedCalanders []StringMeeting
-	l, r := 0, 0
+	var (
+		l, r            = 0, 0
+		mergedCalanders []StringMeeting
+	)
 	switch {
-	case MilitaryTime(a[l].Start).LessThan(MilitaryTime(b[r].Start)):
-		mergedCalanders = append(mergedCalanders, a[l])
-		l++
-	case MilitaryTime(b[r].Start).LessThan(MilitaryTime(a[l].Start)):
+	case !MilitaryTime(a[l].Start).LessThan(MilitaryTime(b[r].Start)):
 		mergedCalanders = append(mergedCalanders, b[r])
 		r++
+	default:
+		mergedCalanders = append(mergedCalanders, a[l])
+		l++
 	}
 
-	for l > len(a) && r > len(b) {
+	for l < len(a) && r < len(b) {
 		switch {
-		case MilitaryTime(a[l].Start).LessThan(MilitaryTime(b[r].Start)):
-			if MilitaryTime(a[l].Start).LessThan(MilitaryTime(mergedCalanders[len(mergedCalanders)-1].End)) {
-				mergedCalanders[len(mergedCalanders)-1].End = max(mergedCalanders[len(mergedCalanders)-1].End, a[l].End)
-			} else {
-				mergedCalanders = append(mergedCalanders, a[l])
-			}
-			l++
-		case MilitaryTime(b[r].Start).LessThan(MilitaryTime(a[l].Start)):
-			if MilitaryTime(b[r].Start).LessThan(MilitaryTime(mergedCalanders[len(mergedCalanders)-1].End)) {
-				mergedCalanders[len(mergedCalanders)-1].End = max(mergedCalanders[len(mergedCalanders)-1].End, b[r].End)
-			} else {
-				mergedCalanders = append(mergedCalanders, b[r])
-			}
+		case !MilitaryTime(a[l].Start).LessThan(MilitaryTime(b[r].Start)):
+			current := b[r]
 			r++
+
+			if !MilitaryTime(current.Start).LessThan(MilitaryTime(mergedCalanders[len(mergedCalanders)-1].End)) {
+				mergedCalanders = append(mergedCalanders, current)
+				continue
+			}
+
+			mergedCalanders[len(mergedCalanders)-1].End = maxInterval(mergedCalanders[len(mergedCalanders)-1].End, current.End)
+		default:
+			current := a[l]
+			l++
+
+			if !MilitaryTime(current.Start).LessThan(MilitaryTime(mergedCalanders[len(mergedCalanders)-1].End)) {
+				mergedCalanders = append(mergedCalanders, current)
+				continue
+			}
+
+			mergedCalanders[len(mergedCalanders)-1].End = maxInterval(mergedCalanders[len(mergedCalanders)-1].End, current.End)
 		}
 	}
 
 	for l < len(a) {
-		if a[l].Start < mergedCalanders[len(mergedCalanders)-1].End {
-			mergedCalanders[len(mergedCalanders)-1].End = max(mergedCalanders[len(mergedCalanders)-1].End, a[l].End)
-		} else {
-			mergedCalanders = append(mergedCalanders, a[l])
-		}
+		current := a[l]
 		l++
+
+		if current.Start < mergedCalanders[len(mergedCalanders)-1].End {
+			mergedCalanders[len(mergedCalanders)-1].End = maxInterval(mergedCalanders[len(mergedCalanders)-1].End, current.End)
+			continue
+		}
+		mergedCalanders = append(mergedCalanders, a[l])
 	}
 
 	for r < len(b) {
-		if b[r].Start < mergedCalanders[len(mergedCalanders)-1].End {
-			mergedCalanders[len(mergedCalanders)-1].End = max(mergedCalanders[len(mergedCalanders)-1].End, b[r].End)
+		current := b[r]
+		r++
 
-		} else {
-			mergedCalanders = append(mergedCalanders, b[r])
-
+		if current.Start < mergedCalanders[len(mergedCalanders)-1].End {
+			mergedCalanders[len(mergedCalanders)-1].End = maxInterval(mergedCalanders[len(mergedCalanders)-1].End, current.End)
+			continue
 		}
+		mergedCalanders = append(mergedCalanders, b[r])
 	}
 
 	return mergedCalanders
@@ -115,6 +159,12 @@ func (m MilitaryTime) Add(other MilitaryTime) MilitaryTime {
 	return minutesToMilitaryTime(mm)
 }
 
+func (m MilitaryTime) Sub(other MilitaryTime) MilitaryTime {
+	mm, mo := m.ToMinutes(), other.ToMinutes()
+	mm -= mo
+	return minutesToMilitaryTime(mm)
+}
+
 func (m MilitaryTime) LessThan(other MilitaryTime) bool {
 	mm, mo := m.ToMinutes(), other.ToMinutes()
 	return mm < mo
@@ -144,9 +194,17 @@ func minutesToMilitaryTime(minutes int) MilitaryTime {
 	return MilitaryTime(fmt.Sprintf("%s:%s", hourStr, minutesStr))
 }
 
-func max(a, b string) string {
+func maxInterval(a, b string) string {
 	am, bm := MilitaryTime(a).ToMinutes(), MilitaryTime(b).ToMinutes()
 	if am > bm {
+		return a
+	}
+	return b
+}
+
+func minInterval(a, b string) string {
+	am, bm := MilitaryTime(a).ToMinutes(), MilitaryTime(b).ToMinutes()
+	if am < bm {
 		return a
 	}
 	return b
