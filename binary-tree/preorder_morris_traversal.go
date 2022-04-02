@@ -9,7 +9,6 @@ func PreOrderMorrisTraversal(root *BinaryTree) []int {
 	var preorder []int
 
 	for root != nil {
-		preorder = append(preorder, root.Value)
 		if root.Left == nil {
 			preorder = append(preorder, root.Value)
 			root = root.Right
@@ -17,7 +16,7 @@ func PreOrderMorrisTraversal(root *BinaryTree) []int {
 		}
 
 		rightMost := root.Left
-		for rightMost.Right != nil && rightMost.Right != nil {
+		for rightMost.Right != nil && rightMost.Right != root {
 			rightMost = rightMost.Right
 		}
 
