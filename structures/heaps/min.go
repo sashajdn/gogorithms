@@ -9,7 +9,7 @@ type MinHeap []int
 // S -> O(1)
 func NewMinHeap(array []int) *MinHeap {
 	h := MinHeap(array)
-	h.BuildHeap(array)
+	h.BuildHeap()
 	return &h
 }
 
@@ -71,6 +71,7 @@ func (h *MinHeap) siftUp() {
 		if (*h)[currentIdx] < (*h)[parentIdx] {
 			h.swap(currentIdx, parentIdx)
 			currentIdx = parentIdx
+			continue
 		}
 
 		return
@@ -100,7 +101,7 @@ func (h *MinHeap) siftDown(currentIndex, endIndex int) {
 
 	minLR := h.minIndexFromValues(lidx, ridx)
 
-	if (*h)[currentIndex] < minLR {
+	if (*h)[currentIndex] < (*h)[minLR] {
 		h.swap(currentIndex, minLR)
 		h.siftDown(minLR, endIndex)
 	}
