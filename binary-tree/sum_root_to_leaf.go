@@ -75,54 +75,49 @@ func SumRootToLeafStack(root *TreeNode) int {
 // T -> O(n)
 // S -> O(1)
 func SumRootToLeafMorrisTraversal(root *TreeNode) int {
-	if root == nil {
-		return 0
-	}
+	var sum int
 
-	var (
-		sum           int
-		currentNumber int
-	)
+	var morris func(root *TreeNode)
+	morris = func(root *TreeNode) {
+		var currentNumber int
 
-	for root != nil {
-		if root.Left != nil {
-			var (
-				predecessor = root.Left
-				steps       = 1
-			)
-
-			for predecessor.Right != nil && predecessor.Right != root {
-				predecessor = predecessor.Right
-				steps++
-			}
-
-			switch {
-			case predecessor.Right == nil:
-				currentNumber = (currentNumber * 10) + root.Val
-				predecessor.Right = root
-				root = root.Left
-			default:
-				if predecessor.Left == nil {
+		for root != nil {
+			if root.Left == nil {
+				currentNumber = currentNumber*10 + root.Val
+				if root.Right == nil {
 					sum += currentNumber
 				}
-
-				for i := 0; i < steps; i++ {
-					currentNumber /= 10
-				}
-
-				predecessor.Right = nil
 				root = root.Right
+				continue
 			}
 
-			continue
-		}
+			var currentSteps = 1
+			rightMost := root.Left
+			for rightMost.Right != nil && rightMost.Right == root {
+				rightMost = rightMost.Right
+				currentSteps++
+			}
 
-		currentNumber = currentNumber*10 + root.Val
-		if root.Right == nil {
-			sum += currentNumber
+			if rightMost == nil {
+				currentNumber = currentNumber*10 + root.Val
+				rightMost.Right = root
+				root = root.Left
+				continue
+			}
+
+			if root.Left == nil {
+				sum += currentNumber
+			}
+
+			for i := 0; i < currentSteps; i++ {
+				currentNumber /= 10
+			}
+
+			rightMost.Right = nil
+			root = root.Right
 		}
-		root = root.Right
 	}
 
+	morris(root)
 	return sum
 }
