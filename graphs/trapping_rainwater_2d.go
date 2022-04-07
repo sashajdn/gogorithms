@@ -22,15 +22,17 @@ func (p PriorityQueue) Swap(i, j int) {
 
 func (p PriorityQueue) Len() int { return len(p) }
 
-func (p PriorityQueue) Push(value interface{}) {
+func (p *PriorityQueue) Push(value interface{}) {
 	pqi := value.(*PriorityQueueItem)
-	p = append(p, pqi)
+	*p = append(*p, pqi)
 }
 
-func (p PriorityQueue) Pop() interface{} {
-	v := p[0]
-	p = p[:p.Len()]
-	return v
+func (p *PriorityQueue) Pop() interface{} {
+	old := *p
+	n := len(old)
+	x := old[n-1]
+	*p = old[:n-1]
+	return x
 }
 
 // TrappingRainWater ...
@@ -76,7 +78,7 @@ func TrappingRainWater(heights [][]int) int {
 		})
 		visited[hash(i, len(heights)-1)] = struct{}{}
 	}
-	heap.Init(pq)
+	heap.Init(&pq)
 
 	var (
 		dx   = []int{-1, 1, 0, 0}
@@ -88,7 +90,7 @@ func TrappingRainWater(heights [][]int) int {
 	// S -> O(n + m)
 	for pq.Len() > 0 {
 		// T -> O(log(n + m))
-		s := pq.Pop()
+		s := heap.Pop(&pq)
 
 		smallestItem := s.(*PriorityQueueItem)
 
@@ -106,7 +108,7 @@ func TrappingRainWater(heights [][]int) int {
 
 			area += max(0, smallestItem.height-heights[ny][nx])
 
-			pq.Push(&PriorityQueueItem{
+			heap.Push(&pq, &PriorityQueueItem{
 				x:      nx,
 				y:      ny,
 				height: max(smallestItem.height, heights[ny][nx]),
