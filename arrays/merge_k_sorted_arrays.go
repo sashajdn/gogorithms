@@ -29,7 +29,7 @@ func MergeKSortedArrays(arrays [][]int) []int {
 
 func mergeTwoArrays(a, b []int) []int {
 	var (
-		output      []int
+		output      = make([]int, 0, len(a)+len(b))
 		left, right = 0, 0
 	)
 
