@@ -1,6 +1,69 @@
 package linkedlists
 
-import "container/heap"
+import (
+	"container/heap"
+)
+
+// MergeKLists_DivideAndConquer ...
+//
+// T -> O(nlog(k))
+// S -> O(1)
+func MergeKLists_DivideAndConquer(lists []*LinkedList) *LinkedList {
+	switch len(lists) {
+	case 0:
+		return nil
+	case 1:
+		return lists[0]
+	}
+
+	var end = len(lists) - 1
+	for end > 0 {
+		var left, right = 0, end
+		for left < right {
+			lists[left] = mergeTwoLinkedLists(lists[left], lists[right])
+			left++
+			right--
+		}
+
+		end = end / 2
+	}
+
+	return lists[0]
+}
+
+func mergeTwoLinkedLists(a, b *LinkedList) *LinkedList {
+	var (
+		sent    = &LinkedList{}
+		current = sent
+	)
+
+	for a != nil && b != nil {
+		if a.Value < b.Value {
+			current.Next = a
+			a = a.Next
+			current = current.Next
+			continue
+		}
+
+		current.Next = b
+		b = b.Next
+		current = current.Next
+	}
+
+	for a != nil {
+		current.Next = a
+		a = a.Next
+		current = current.Next
+	}
+
+	for b != nil {
+		current.Next = b
+		b = b.Next
+		current = current.Next
+	}
+
+	return sent.Next
+}
 
 // T -> O(n * log(k))
 // S -> O(k)
@@ -64,4 +127,18 @@ func (p *PriorityQueue) Pop() interface{} {
 	v := (*p)[p.Len()-1]
 	*p = (*p)[:p.Len()-1]
 	return v
+}
+
+func linkedListToArray(ll *LinkedList) []int {
+	var (
+		array   = []int{}
+		current = ll
+	)
+
+	for current != nil {
+		array = append(array, current.Value)
+		current = current.Next
+	}
+
+	return array
 }

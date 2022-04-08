@@ -7,10 +7,11 @@ import (
 )
 
 var mergeKLinkedListsFs = []func(lists []*LinkedList) *LinkedList{
+	MergeKLists_DivideAndConquer,
 	MergeKLists_Heap,
 }
 
-func TestMergeLinkedList(t *testing.T) {
+func TestMergeKLinkedList(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -19,12 +20,23 @@ func TestMergeLinkedList(t *testing.T) {
 		expectedAdjancentOutput []int
 	}{
 		{
-			name: "example_one",
+			name: "example_even",
 			adjacentInput: [][]int{
 				{1, 3, 5, 6, 8, 14},
 				{2, 4, 9},
 				{7, 10, 15},
 				{11, 12, 13, 16},
+			},
+			expectedAdjancentOutput: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+		},
+		{
+			name: "example_odd",
+			adjacentInput: [][]int{
+				{1, 3, 5},
+				{2, 4, 9},
+				{7, 10, 15},
+				{11, 12, 13, 16},
+				{6, 8, 14},
 			},
 			expectedAdjancentOutput: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
 		},
@@ -72,18 +84,4 @@ func arraysToLinkedLists(arrays [][]int) []*LinkedList {
 	}
 
 	return output
-}
-
-func linkedListToArray(ll *LinkedList) []int {
-	var (
-		array   = []int{}
-		current = ll
-	)
-
-	for current != nil {
-		array = append(array, current.Value)
-		current = current.Next
-	}
-
-	return array
 }
