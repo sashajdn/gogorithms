@@ -1,5 +1,68 @@
 package graphs
 
+type ComponentDSU struct {
+	reps, ranks []int
+}
+
+func NewComponentDSU(size int) *ComponentDSU {
+	var (
+		ranks = make([]int, size)
+		reps  = make([]int, size)
+	)
+	for i := 0; i < size; i++ {
+		ranks[i] = 1
+		reps[i] = i
+	}
+
+	return &ComponentDSU{
+		ranks: ranks,
+		reps:  reps,
+	}
+}
+
+func (c *ComponentDSU) Find(group int) int {
+	if c.reps[group] == group {
+		return group
+	}
+
+	c.reps[group] = c.Find(c.reps[group])
+	return c.reps[group]
+}
+
+func (c *ComponentDSU) Union(a, b int) int {
+	ra, rb := c.Find(a), c.Find(b)
+	if ra == rb {
+		return 0
+	}
+
+	if c.ranks[ra] >= c.ranks[rb] {
+		c.reps[rb] = c.reps[ra]
+		c.ranks[ra] += c.ranks[rb]
+		return 1
+	}
+
+	c.reps[ra] = c.reps[rb]
+	c.ranks[rb] += c.ranks[ra]
+	return 1
+}
+
+// CountComponents_DSU ...
+//
+// T -> O(E * alpha(n)) where `E` is the number of edges & `alpha` is the inverse ackermann function over the number of nodes.
+// S -> O(V) where `V` is the number of vertices.
+func CountComponents_DSU(n int, edges [][]int) int {
+	var (
+		dsu   = NewComponentDSU(n)
+		count = n
+	)
+	for _, edge := range edges {
+		from, to := edge[0], edge[1]
+		count -= dsu.Union(from, to)
+	}
+
+	return count
+}
+
 // CountComponents_DFS ...
 //
 // T -> O(v + e) // where v is the number of vertices & e is the number of edges duoe to DFS.
