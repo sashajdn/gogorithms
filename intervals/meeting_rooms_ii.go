@@ -5,11 +5,53 @@ import (
 	"sort"
 )
 
-// MinNumberOfMeetingRooms ...
+// MinNumberOfMeetingRooms_Pointers ...
+//
+// T -> O(nlog(n)) where `n` is the number of meetings, since we have to sort the input.
+// S -> O(n) where `n` is the number of meetings, since we have to create the start and end times arrays.
+func MinNumberOfMeetingRooms_Pointers(intervals [][]int) int {
+	if len(intervals) < 2 {
+		return len(intervals)
+	}
+
+	var startTimes, endTimes = make([]int, 0, len(intervals)), make([]int, 0, len(intervals))
+	for _, interval := range intervals {
+		startTime, endTime := interval[0], interval[1]
+
+		startTimes = append(startTimes, startTime)
+		endTimes = append(endTimes, endTime)
+	}
+
+	sort.Slice(startTimes, func(i, j int) bool {
+		return startTimes[i] < startTimes[j]
+	})
+
+	sort.Slice(endTimes, func(i, j int) bool {
+		return endTimes[i] < endTimes[j]
+	})
+
+	var (
+		startPointer, endPointer int
+		concurrentMeetings       int
+	)
+	for startPointer < len(intervals) {
+		if startTimes[startPointer] >= endTimes[endPointer] {
+			concurrentMeetings--
+			endPointer++
+		}
+
+		concurrentMeetings++
+		startPointer++
+	}
+
+	return concurrentMeetings
+}
+
+// MinNumberOfMeetingRooms_PQ ...
 //
 // T -> O(nlog(n)) where `n` is the number of meetings; we have to sort them.
 // S -> O(n) where `n` is the number of intervals; in the worst case when all meetings are overlapping.
-func MinNumberOfMeetingRooms(intervals [][]int) int {
+func MinNumberOfMeetingRooms_PQ(intervals [][]int) int {
 	if len(intervals) < 2 {
 		return len(intervals)
 	}
