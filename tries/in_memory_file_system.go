@@ -104,7 +104,7 @@ func (i *InMemoryFileSystem) AppendToFile(filepath, content string) error {
 	}
 
 	current.content += content
-	return nialexjperkins / gogorithmsl
+	return nil
 }
 
 func (i *InMemoryFileSystem) AddFile(filepath, content string) error {
