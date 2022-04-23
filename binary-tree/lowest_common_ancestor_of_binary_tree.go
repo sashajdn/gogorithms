@@ -1,5 +1,44 @@
 package binarytree
 
+// LowestCommonAncestorOfBinaryTree_Iterative ...
+//
+// T -> O(n) where `n` is the number of nodes in the tree.
+// S -> O(1)
+func LowestCommonAncestorOfBinaryTree_Iterative(root, p, q *BinaryTree) *BinaryTree {
+	if p.Value > q.Value {
+		return LowestCommonAncestorOfBinaryTree_Iterative(root, q, p)
+	}
+
+	for root != nil {
+		if p == q {
+			return p
+		}
+
+		switch root {
+		case p:
+			return p
+		case q:
+			return q
+		}
+
+		if root.Value < p.Value && root.Value < q.Value {
+			root = root.Right
+			continue
+		}
+
+		if root.Value > p.Value && root.Value > q.Value {
+			root = root.Left
+			continue
+		}
+
+		if root.Value > p.Value && root.Value < q.Value {
+			return root
+		}
+	}
+
+	return nil
+}
+
 // LowestCommonAncestorOfBinaryTree ...
 //
 // T -> O(n) where `n` is the total number of leaves in the tree at any given time.
