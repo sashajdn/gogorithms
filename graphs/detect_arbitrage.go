@@ -2,6 +2,65 @@ package graphs
 
 import "math"
 
+// DetectArbitrage_Improved ...
+//
+// T -> O(n ** 3)
+// S -> O(n)
+func DetectArbitrage_Improved(exchangeRates [][]float64) bool {
+	var profits = make([]float64, 0, len(exchangeRates))
+	for i := 0; i < len(profits); i++ {
+		profits[i] = math.MaxInt
+	}
+	profits[0] = 0
+
+	// Relaxation.
+	for n := 0; n < len(exchangeRates); n++ {
+		for j := 0; j < len(exchangeRates); j++ {
+			for i := 0; i < len(exchangeRates[0]); i++ {
+				from, to := j, i
+				profit := negativeLog(exchangeRates[j][i])
+
+				if profits[from] == math.MaxInt {
+					profits[to] = profits[from] + profit
+					continue
+				}
+
+				if profits[from]+profit < profits[to] {
+					profits[to] = profits[from] + profit
+				}
+			}
+		}
+	}
+
+	// Propagate negative cycles.
+	for n := 0; n < len(exchangeRates); n++ {
+		for j := 0; j < len(exchangeRates); j++ {
+			for i := 0; i < len(exchangeRates); i++ {
+				from, to := j, i
+				if profits[from] == math.MinInt {
+					profits[to] = math.MinInt
+					continue
+				}
+
+				profit := negativeLog(exchangeRates[j][i])
+				if profits[from]+profit < profits[to] {
+					profits[to] = math.MinInt
+					continue
+				}
+			}
+		}
+	}
+
+	// Find negative cycle.
+	for _, p := range profits {
+		if p == math.MinInt {
+			return true
+		}
+	}
+
+	return false
+}
+
 //  ArbitrageEdge ...
 type ArbitrageEdge struct {
 	To, From int
