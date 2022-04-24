@@ -2,11 +2,11 @@ package dynamic
 
 import "sort"
 
-// CombinationSumIV ...
+// CombinationSumIV_TopDown ...
 //
 // T -> O(n * t + nlog(n))
-// S -> O(n)
-func CombinationSumIV(numbers []int, target int) int {
+// S -> O(t)
+func CombinationSumIV_TopDown(numbers []int, target int) int {
 	var memo = map[int]int{}
 	sort.Ints(numbers)
 
@@ -34,4 +34,27 @@ func CombinationSumIV(numbers []int, target int) int {
 	}
 
 	return combinations(target)
+}
+
+// CombinationSumIV_BottomUp ...
+//
+// T -> O(n * t + nlog(n))
+// S -> O(t)
+func CombinationSumIV_BottomUp(numbers []int, target int) int {
+	sort.Ints(numbers)
+
+	var dp = make([]int, target+1)
+	dp[0] = 1
+
+	for i := 1; i < target+1; i++ {
+		for _, number := range numbers {
+			if number > i {
+				continue
+			}
+
+			dp[i] += dp[i-number]
+		}
+	}
+
+	return dp[target]
 }
