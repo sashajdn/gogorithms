@@ -31,11 +31,3 @@ func LongestRepeatingStringAfterKOperations(s string, k int) int {
 func runeToIndex(r rune) int {
 	return int(r - 'A')
 }
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-
-	return b
-}
