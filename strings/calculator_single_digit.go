@@ -85,24 +85,3 @@ func calculateSingleDigit(array []string) int {
 
 	return sum
 }
-
-type OperationOrder int
-
-const (
-	OperationOrderLeft OperationOrder = iota + 1
-	OperationOrderRight
-)
-
-func orderOfOperation(array []string, l, r int) OperationOrder {
-	switch array[r] {
-	case "*", "/":
-		return OperationOrderRight
-	}
-
-	switch array[l] {
-	case "*", "/":
-		return OperationOrderLeft
-	}
-
-	return OperationOrderRight
-}

@@ -35,7 +35,7 @@ func (c Counter) Hash() string {
 	var sb strings.Builder
 	for r := 'a'; r <= 'z'; r++ {
 		if count, ok := c[r]; ok {
-			sb.WriteString(fmt.Sprintf("#%s%d", r, count))
+			sb.WriteString(fmt.Sprintf("#%v%d", r, count))
 		}
 	}
 
