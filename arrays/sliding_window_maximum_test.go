@@ -7,8 +7,8 @@ import (
 )
 
 var slidingWindowMaximumChecks = []func(nums []int, k int) []int{
-	// SlidingWindowMaximum_BruteForce,
-	// SlidingWindowMaximum_Deque,
+	SlidingWindowMaximum_BruteForce,
+	SlidingWindowMaximum_Deque,
 	SlidingWindowMaximum_Dynamic,
 }
 
