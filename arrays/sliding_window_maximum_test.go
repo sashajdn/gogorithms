@@ -8,6 +8,7 @@ import (
 
 var slidingWindowMaximumChecks = []func(nums []int, k int) []int{
 	SlidingWindowMaximum_BruteForce,
+	SlidingWindowMaximum_Deque,
 }
 
 func TestSlidingWindowMaximum(t *testing.T) {
