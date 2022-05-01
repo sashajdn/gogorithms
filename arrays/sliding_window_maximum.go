@@ -157,7 +157,7 @@ func (d *Deque) Len() int {
 // SlidingWindowMaximum_Deque ...
 //
 // T -> O(n)
-// S -> O(k)
+// S -> O(n)
 func SlidingWindowMaximum_Deque(nums []int, k int) []int {
 	if len(nums)*k == 0 {
 		return []int{}
@@ -223,6 +223,48 @@ func SlidingWindowMaximum_Deque(nums []int, k int) []int {
 		}
 
 		output = append(output, nums[firstIndex])
+	}
+
+	return output
+}
+
+// SlidingWindowMaximum_Dynamic ...
+// T -> O(n)
+// S -> O(n)
+func SlidingWindowMaximum_Dynamic(nums []int, k int) []int {
+	if len(nums)*k == 0 {
+		return []int{}
+	}
+	if len(nums) == 1 || k == 1 {
+		return nums
+	}
+
+	var (
+		left, right   = make([]int, len(nums)), make([]int, len(nums))
+		leftMaxSoFar  = math.MinInt
+		rightMaxSoFar = math.MinInt
+	)
+	for i := 0; i < len(nums); i++ {
+		leftMaxSoFar = max(leftMaxSoFar, nums[i])
+		left[i] = leftMaxSoFar
+
+		if (i+1)%k == 0 {
+			leftMaxSoFar = math.MinInt
+		}
+
+		rightIndex := len(nums) - i - 1
+
+		rightMaxSoFar = max(rightMaxSoFar, nums[rightIndex])
+		right[rightIndex] = rightMaxSoFar
+
+		if rightIndex%k == 0 {
+			rightMaxSoFar = math.MinInt
+		}
+	}
+
+	var output = make([]int, 0, len(nums)-k+1)
+	for i := k - 1; i < len(nums); i++ {
+		output = append(output, max(left[i], right[i-k+1]))
 	}
 
 	return output
