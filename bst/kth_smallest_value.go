@@ -1,5 +1,9 @@
 package bst
 
+// KthSmallest ...
+//
+// T -> O(n)
+// S -> O(1)
 func KthSmallest(root *BinaryTree, k int) int {
 	var (
 		count   = 1
