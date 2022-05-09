@@ -32,7 +32,7 @@ func KnapsackTransactions(transactions []*Transaction, blockSize int) []*Transac
 		includedTransactions []*Transaction
 		capacityLeft         = blockSize
 	)
-	for j := len(transactions); j >= 0; j-- {
+	for j := len(transactions); j >= 1; j-- {
 		if capacityLeft <= 0 {
 			break
 		}
@@ -45,7 +45,7 @@ func KnapsackTransactions(transactions []*Transaction, blockSize int) []*Transac
 		capacityLeft -= transactions[j-1].Size
 	}
 
-	var left, right int
+	var left, right = 0, len(includedTransactions) - 1
 	for left < right {
 		includedTransactions[left], includedTransactions[right] = includedTransactions[right], includedTransactions[left]
 		left++
