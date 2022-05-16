@@ -14,13 +14,13 @@ func EditDistance(word1, word2 string) int {
 	}
 
 	var top, bottom = make([]int, len(word2)+1), make([]int, len(word2)+1)
-	for i := 1; i < len(word1)+1; i++ {
+	for i := 1; i < len(word2)+1; i++ {
 		top[i] = i
 	}
 	bottom[0] = 1
 
 	for j := 1; j < len(word1)+1; j++ {
-		for i := 1; i < len(word2); i++ {
+		for i := 1; i < len(word2)+1; i++ {
 			if word1[j-1] == word2[i-1] {
 				bottom[i] = top[i-1]
 				continue
@@ -29,7 +29,7 @@ func EditDistance(word1, word2 string) int {
 			bottom[i] = min(min(top[i], bottom[i-1]), top[i-1]) + 1
 		}
 
-		top, bottom = bottom, make([]int, len(word1)+1)
+		top, bottom = bottom, make([]int, len(word2)+1)
 		bottom[0] = j + 1
 	}
 
