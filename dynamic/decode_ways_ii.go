@@ -115,7 +115,7 @@ func DecodeWays_TopDownTwoPointer(s string) int {
 	}
 
 	var mapping = map[int]struct{}{}
-	for i := 0; i <= 26; i++ {
+	for i := 1; i <= 26; i++ {
 		mapping[i] = struct{}{}
 	}
 
@@ -130,7 +130,8 @@ func DecodeWays_TopDownTwoPointer(s string) int {
 			total += second
 		}
 
-		if _, ok := mapping[stringToInt(s[i-2:i])]; ok {
+		double := stringToInt(s[i-2 : i])
+		if _, ok := mapping[double]; ok && double > 9 {
 			total += first
 		}
 
