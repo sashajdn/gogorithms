@@ -174,9 +174,11 @@ func InterweavingStrings_BottomUp1D(s1, s2, s3 string) bool {
 			if s2[i] == s3[i+j] {
 				top[i] = top[i+1]
 			}
+
+			top[i] = false
 		}
 
-		bottom, top = top, make([]bool, len(s2)+1)
+		bottom, top = top, bottom
 		top[len(s2)] = s1[j] == s3[j+len(s2)] && bottom[len(s2)]
 	}
 
