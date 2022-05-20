@@ -6,6 +6,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var numberOfWaysToRollDiceCheck = []func(d, f, target int) int{
+	NumberOfWaysToRollDice_TopDown,
+	NumberOfWaysToRollDice_BottomUp,
+}
+
 func TestNumberOfWaysToRollDice(t *testing.T) {
 	t.Parallel()
 
@@ -36,9 +41,11 @@ func TestNumberOfWaysToRollDice(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			res := NumberOfWaysToRollDice(tt.d, tt.f, tt.target)
+			for _, c := range numberOfWaysToRollDiceCheck {
+				res := c(tt.d, tt.f, tt.target)
 
-			assert.Equal(t, tt.expectedOutput, res)
+				assert.Equal(t, tt.expectedOutput, res)
+			}
 		})
 	}
 }
