@@ -48,3 +48,19 @@ func Fibonacci_TopDown(n int) int {
 
 	return dp[n]
 }
+
+func Fibonacci_TopDownPointers(n int) int {
+	switch n {
+	case 0:
+		return 0
+	case 1, 2:
+		return 1
+	}
+
+	var first, second = 1, 1
+	for i := 2; i < n+1; i++ {
+		first, second = second, first+second
+	}
+
+	return first
+}

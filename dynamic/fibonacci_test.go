@@ -9,6 +9,7 @@ import (
 var fibonnaciChecks = []func(n int) int{
 	Fibonacci_BottomUp,
 	Fibonacci_TopDown,
+	Fibonacci_TopDownPointers,
 }
 
 func TestFibonacci(t *testing.T) {
